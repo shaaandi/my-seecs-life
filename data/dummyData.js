@@ -39,7 +39,7 @@ export default async () => {
       id: "HU100",
       title: "English and Communication Skills",
       instructor: "Maam Idika Roy",
-      classTimmings: "Mo#1600-1650+Th#1600-1650",
+      classTimmings: "Mo#1600-1650+Th#1600-1650+Fr#1600-1700",
       courseCode: "HU100"
     }
   ];

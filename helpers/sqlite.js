@@ -275,6 +275,10 @@ export const insertTodo = todo => {
   return promise;
 };
 
+
+
+
+
 // updating queries ;
 
 export const updateCourse = (id, data) => {
@@ -463,21 +467,3 @@ export const updateTodo = (id, data) => {
 
   return promise;
 };
-
-// `CREATE TABLE IF NOT EXISTS courses
-//     (
-//         id INTEGER PRIMARY KEY NOT NULL  AUTOINCREMENT,
-//         courseCode TEXT NOT NULL UNIQUE,
-//         title TEXT NOT NULL,
-//         instructor TEXT NOT NULL,
-//         classTimmings TEXT NOT NULL
-//     );
-
-// CREATE TABLE IF NOT EXISTS assignments
-//     (
-//         id TEXT PRIMARY KEY NOT NULL UNIQUE ,
-//         courseCode TEXT NOT NULL,
-//         title TEXT NOT NULL,
-//         dueDate DATE NOT NULL,
-//         dateGiven DATE NOT NULL
-//     );

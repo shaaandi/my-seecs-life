@@ -11,6 +11,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
+import moment from 'moment';
 let dayMapping = {
   1: "Mo",
   2: "Tu",
@@ -38,12 +39,12 @@ const Today = props => {
   let date = new Date();
   let n = date.getDay();
   let today = courses.map(({ classTimmings, title, courseCode, tint }) => {
-    if (classTimmings[dayMapping[1]]) {
+    if (classTimmings[dayMapping[n]]) {
       // you have a class at this day; so now return the class timings with title;
       return {
         title,
         courseCode,
-        time: classTimmings[dayMapping[1]],
+        time: classTimmings[dayMapping[n]],
         tint
       };
     }
@@ -53,6 +54,14 @@ const Today = props => {
   let timmings = myd.sort(compare);
   const renderItem = ({ item, index }) => {
     let { title, time, courseCode, tint } = item;
+    let from = new Date();
+    let to = new Date();
+    from.setHours(time.from.slice(0,2));
+    from.setMinutes(time.from.slice(2,4))
+    to.setHours(time.to.slice(0,2));
+    to.setMinutes(time.to.slice(2,4))
+    borderLeftTint = moment(from).isAfter(new Date()) ? tint : `${tint}6b`;
+    backgroundTint = moment(from).isAfter(new Date()) ? 'white' : 'whitesmoke';
     return (
       <TouchableNativeFeedback
         onPress={() =>
@@ -62,14 +71,20 @@ const Today = props => {
           })
         }
       >
-        <View style={{ borderLeftColor: tint, ...styles.listElem }}>
+        <View style={{ borderLeftColor: borderLeftTint, ...styles.listElem , backgroundColor : backgroundTint }}>
           <View>
             <Text style={styles.subTitle}>{title.slice(0, 35)}</Text>
           </View>
           <View>
             <Text style={styles.subTim}>
-              {time.from} to {time.to}
+              {moment(from).format("h:mm a")} to {moment(to).format("h:mm a")}
             </Text>
+          </View>
+          {/* if the from is not after but to is after than show the bar */}
+          <View style={styles.toolTipWrapper}>
+            <View style={styles.toolTipWrapper}>
+
+            </View>
           </View>
         </View>
       </TouchableNativeFeedback>
@@ -79,7 +94,9 @@ const Today = props => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.heading}>
-        <Text style={styles.headingText}>{timmings.length} Class Today</Text>
+        <Text style={styles.headingText}>
+  {timmings.length}{(timmings.length > 1  ?  ` Classes Today`: ` Class Today` )}
+          </Text>
       </View>
       <FlatList
         style={styles.list}
@@ -94,7 +111,8 @@ const Today = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10
+    paddingVertical : 10,
+    paddingHorizontal : 0
   },
   heading: {
     padding: 10
@@ -104,10 +122,11 @@ const styles = StyleSheet.create({
     // fontWeight: "bold"
   },
   list: {
-    padding: 10
+    paddingVertical : 10,
+    paddingHorizontal : 0 
   },
   listElem: {
-    padding: 5,
+    padding : 5,
     borderLeftWidth: 5,
     // borderLeftColor: "#222",
     // borderWidth: 1,
